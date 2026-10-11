@@ -12,3 +12,10 @@ ARG FLAG=FLAG{46c3ef043123012aa7ed0ab5a0c6a7e40a53a624ce3ae406f52e7301a8033a9b}
 RUN sed -i s/@FLAG@/$FLAG/g index.php
 
 EXPOSE 80
+
+# CyberCTF per-player flag: the flag above is only the development fallback. ctf-entrypoint.sh
+# puts the player's flag (CTF_FLAG_MAIN) in its place at every start, then runs the original
+# entrypoint and command, repeated here unchanged.
+COPY ctf-entrypoint.sh /usr/local/bin/ctf-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/ctf-entrypoint.sh", "docker-php-entrypoint"]
+CMD ["apache2-foreground"]
